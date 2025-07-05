@@ -28,5 +28,10 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.0"
-  }
+  },
+  "rewrites": [
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/booking", "destination": "/booking.html" },
+    { "source": "/", "destination": "/index.html" }
+  ]
 }
