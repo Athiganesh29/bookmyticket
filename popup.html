@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Message</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-container {
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            backdrop-filter: blur(10px);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .popup-overlay.show .popup-container {
+            transform: scale(1);
+        }
+
+        .popup-header {
+            padding: 1.5rem 1.5rem 0.5rem;
+        }
+
+        .popup-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .popup-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .popup-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .popup-message {
+            color: #e6f1ff;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            white-space: pre-line;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .popup-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .popup-btn-primary {
+            background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+            color: #0a192f;
+        }
+
+        .popup-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        .popup-btn-secondary {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .popup-btn-secondary:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Popup Types */
+        .popup-success .popup-icon {
+            color: #64ffda;
+        }
+
+        .popup-success .popup-title {
+            color: #64ffda;
+        }
+
+        .popup-error .popup-icon {
+            color: #ff6b6b;
+        }
+
+        .popup-error .popup-title {
+            color: #ff6b6b;
+        }
+
+        .popup-warning .popup-icon {
+            color: #ffc107;
+        }
+
+        .popup-warning .popup-title {
+            color: #ffc107;
+        }
+
+        .popup-info .popup-icon {
+            color: #00bcd4;
+        }
+
+        .popup-info .popup-title {
+            color: #00bcd4;
+        }
+
+        /* Close button */
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #8892b0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .popup-close:hover {
+            color: #64ffda;
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        /* Demo buttons */
+        .demo-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-title {
+            color: #64ffda;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-subtitle {
+            color: #8892b0;
+            margin-bottom: 2rem;
+        }
+
+        .demo-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .demo-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .demo-btn-success {
+            background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+            color: #0a192f;
+        }
+
+        .demo-btn-error {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+            color: white;
+        }
+
+        .demo-btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: #0a192f;
+        }
+
+        .demo-btn-info {
+            background: linear-gradient(135deg, #00bcd4 0%, #2196f3 100%);
+            color: white;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Container -->
+    <div class="demo-container">
+        <div class="demo-title">🎬 Popup Message System</div>
+        <p class="demo-subtitle">Click the buttons below to see different types of popup messages</p>
+        
+        <div class="demo-buttons">
+            <button class="demo-btn demo-btn-success" onclick="showPopup('success', 'Success!', 'Your account has been created successfully. You can now login with your credentials.')">
+                Success Message
+            </button>
+            <button class="demo-btn demo-btn-error" onclick="showPopup('error', 'Error!', 'Something went wrong. Please try again or contact support if the problem persists.')">
+                Error Message
+            </button>
+            <button class="demo-btn demo-btn-warning" onclick="showPopup('warning', 'Warning!', 'Please make sure you have accepted the terms and conditions before proceeding.')">
+                Warning Message
+            </button>
+            <button class="demo-btn demo-btn-info" onclick="showPopup('info', 'Information', 'This is an informational message. You can use this to provide helpful tips or guidance to users.')">
+                Info Message
+            </button>
+        </div>
+    </div>
+
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-container" id="popupContainer">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            
+            <div class="popup-header">
+                <div class="popup-icon" id="popupIcon">✅</div>
+                <div class="popup-title" id="popupTitle">Success</div>
+            </div>
+            
+            <div class="popup-content">
+                <div class="popup-message" id="popupMessage">Your message here</div>
+                <div class="popup-buttons" id="popupButtons">
+                    <button class="popup-btn popup-btn-primary" onclick="closePopup()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Popup functionality
+        function showPopup(type, title, message, buttons = null) {
+            const overlay = document.getElementById('popupOverlay');
+            const container = document.getElementById('popupContainer');
+            const icon = document.getElementById('popupIcon');
+            const titleEl = document.getElementById('popupTitle');
+            const messageEl = document.getElementById('popupMessage');
+            const buttonsEl = document.getElementById('popupButtons');
+
+            // Set icon based on type
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+
+            // Set colors and styling based on type
+            container.className = `popup-container popup-${type}`;
+            icon.textContent = icons[type] || 'ℹ️';
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+
+            // Set up buttons
+            if (buttons) {
+                buttonsEl.innerHTML = buttons;
+            } else {
+                buttonsEl.innerHTML = '<button class="popup-btn popup-btn-primary" onclick="closePopup()">OK</button>';
+            }
+
+            // Show popup
+            overlay.classList.add('show');
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup() {
+            const overlay = document.getElementById('popupOverlay');
+            overlay.classList.remove('show');
+            
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('popupOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+
+        // Example functions for different popup types
+        function showSuccessPopup(message) {
+            showPopup('success', 'Success!', message);
+        }
+
+        function showErrorPopup(message) {
+            showPopup('error', 'Error!', message);
+        }
+
+        function showWarningPopup(message) {
+            showPopup('warning', 'Warning!', message);
+        }
+
+        function showInfoPopup(message) {
+            showPopup('info', 'Information', message);
+        }
+
+        function showConfirmPopup(message, onConfirm, onCancel) {
+            const buttons = `
+                <button class="popup-btn popup-btn-primary" onclick="confirmAction()">Yes</button>
+                <button class="popup-btn popup-btn-secondary" onclick="closePopup()">No</button>
+            `;
+            
+            showPopup('warning', 'Confirm Action', message, buttons);
+            
+            // Store callbacks
+            window.confirmAction = function() {
+                closePopup();
+                if (onConfirm) onConfirm();
+            };
+        }
+
+        // Make functions globally available
+        window.showPopup = showPopup;
+        window.closePopup = closePopup;
+        window.showSuccessPopup = showSuccessPopup;
+        window.showErrorPopup = showErrorPopup;
+        window.showWarningPopup = showWarningPopup;
+        window.showInfoPopup = showInfoPopup;
+        window.showConfirmPopup = showConfirmPopup;
+    </script>
+</body>
+</html>

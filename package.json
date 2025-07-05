@@ -1,0 +1,32 @@
+{
+  "name": "movies-ticket",
+  "version": "1.0.0",
+  "main": "model/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node model/server.js",
+    "dev": "nodemon model/server.js",
+    "seed": "node model/seedData.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "movie",
+    "tickets",
+    "booking",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Movie ticket booking system with MongoDB backend",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}

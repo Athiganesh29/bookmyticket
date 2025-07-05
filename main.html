@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Tickets - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #64ffda;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.3);
+        }
+
+        .welcome-text {
+            color: #e6f1ff;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: #8892b0;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu li a:hover {
+            background: #64ffda;
+            color: #0a192f;
+        }
+
+        .nav-menu li a.active {
+            background: #64ffda;
+            color: #0a192f;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-title {
+            color: #e6f1ff;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+        }
+
+        .section-title {
+            color: #64ffda;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.2);
+        }
+
+        /* Movie Cards Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .movie-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(100, 255, 218, 0.2);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover .movie-poster {
+            transform: scale(1.05);
+        }
+
+        .movie-info {
+            padding: 1.5rem;
+        }
+
+        .movie-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e6f1ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-genre {
+            color: #8892b0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .rating-text {
+            color: #8892b0;
+            font-size: 0.9rem;
+        }
+
+        .book-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+            color: #0a192f;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.4);
+        }
+
+        .book-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Showtime Section */
+        .showtime-section {
+            background: rgba(26, 26, 46, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .showtime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .showtime-card {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .showtime-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.2);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+
+        .showtime-movie {
+            font-weight: bold;
+            color: #e6f1ff;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .showtime-time {
+            color: #64ffda;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .time-badge {
+            background: #64ffda;
+            color: #0a192f;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .time-badge:hover {
+            background: #00bcd4;
+            transform: scale(1.05);
+        }
+
+        /* Ticket Booked Section */
+        .tickets-section {
+            background: rgba(26, 26, 46, 0.6);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .ticket-card {
+            background: rgba(15, 52, 96, 0.8);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(100, 255, 218, 0.1);
+        }
+
+        .ticket-card:hover {
+            transform: translateX(5px);
+            border-color: rgba(100, 255, 218, 0.3);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.1);
+        }
+
+        .ticket-info h4 {
+            color: #e6f1ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-details {
+            color: #8892b0;
+            font-size: 0.9rem;
+        }
+
+        .ticket-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            background: rgba(100, 255, 218, 0.2);
+            color: #64ffda;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .movies-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .main-container {
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            color: #64ffda;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(100, 255, 218, 0.3);
+            border-top: 4px solid #64ffda;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🎬 Movie Tickets</div>
+            <div class="welcome-text">WELCOME, <span id="username">User</span>!</div>
+            <ul class="nav-menu">
+                <li><a href="#movies" class="active" onclick="showSection('movies')">Movies</a></li>
+                <li><a href="#tickets" onclick="showSection('tickets')">Tickets Booked</a></li>
+                <li><a href="login.html" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <h1 class="page-title">Now Showing</h1>
+
+        <!-- Movies Section -->
+        <div id="movies-section" class="section">
+            <div class="movies-grid" id="moviesGrid">
+                <!-- Movie cards will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Showtime Section -->
+        <div id="showtime-section" class="section" style="display: none;">
+            <h2 class="section-title">Today's Showtimes</h2>
+            <div class="showtime-section">
+                <div class="showtime-grid" id="showtimeGrid">
+                    <!-- Showtime cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tickets Booked Section -->
+        <div id="tickets-section" class="section" style="display: none;">
+            <h2 class="section-title">Your Booked Tickets</h2>
+            <div class="tickets-section">
+                <div id="ticketsList">
+                    <!-- Ticket cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            Loading...
+        </div>
+    </div>
+
+    <script>
+        // Sample movie data - will be loaded from API
+        let movies = [];
+
+        // Empty booked tickets array - no pre-loaded tickets
+        const bookedTickets = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check if user has a valid session
+            if (!checkUserSession()) {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Set username (you can get this from localStorage or session)
+            const username = localStorage.getItem('username') || 'Movie lover';
+            document.getElementById('username').textContent = username.toUpperCase();
+            
+            // Load movies from API
+            await loadMovies();
+            
+            // Load showtimes
+            loadShowtimes();
+            
+            // Load booked tickets
+            loadBookedTickets();
+        });
+
+        // Session management functions
+        function checkUserSession() {
+            const sessionData = localStorage.getItem('userSession');
+            if (!sessionData) return false;
+            
+            try {
+                const session = JSON.parse(sessionData);
+                const now = new Date();
+                const expiresAt = new Date(session.expiresAt);
+                
+                if (now < expiresAt) {
+                    // Session is still valid
+                    return true;
+                } else {
+                    // Session expired, clear it
+                    clearUserSession();
+                    return false;
+                }
+            } catch (error) {
+                clearUserSession();
+                return false;
+            }
+        }
+
+        function clearUserSession() {
+            localStorage.removeItem('userSession');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('username');
+        }
+
+        // Booking variables
+        let selectedMovie = null;
+        let selectedTime = null;
+        let selectedSeats = [];
+        let bookedSeats = new Set(); // Track booked seats
+
+        // Load movies from API
+        async function loadMovies() {
+            try {
+                const response = await fetch('/api/movies');
+                if (response.ok) {
+                    movies = await response.json();
+                    displayMovies();
+                } else {
+                    console.error('Failed to load movies');
+                    showNotification('Failed to load movies. Please refresh the page.');
+                }
+            } catch (error) {
+                console.error('Error loading movies:', error);
+                showNotification('Network error. Please check your connection.');
+            }
+        }
+
+        // Display movies
+        function displayMovies() {
+            const moviesGrid = document.getElementById('moviesGrid');
+            moviesGrid.innerHTML = '';
+
+            movies.forEach(movie => {
+                const movieCard = createMovieCard(movie);
+                moviesGrid.appendChild(movieCard);
+            });
+        }
+
+        // Create movie card
+        function createMovieCard(movie) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            
+            const stars = '★'.repeat(Math.floor(movie.rating)) + '☆'.repeat(5 - Math.floor(movie.rating));
+            
+            card.innerHTML = `
+                <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                <div class="movie-info">
+                    <h3 class="movie-title">${movie.title}</h3>
+                    <p class="movie-genre">${movie.genre}</p>
+                    <div class="movie-rating">
+                        <span class="stars">${stars}</span>
+                        <span class="rating-text">${movie.rating}/5</span>
+                    </div>
+                    <button class="book-btn" onclick="bookMovie('${movie._id}')">Book Now</button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Simple book movie function
+        function bookMovie(movieId) {
+            const movie = movies.find(m => m._id === movieId);
+            if (movie) {
+                // Navigate to booking page with movie details
+                const bookingUrl = `booking.html?movieId=${movie._id}&title=${encodeURIComponent(movie.title)}&genre=${encodeURIComponent(movie.genre)}&rating=${movie.rating}&poster=${encodeURIComponent(movie.poster)}`;
+                window.location.href = bookingUrl;
+            }
+        }
+
+        // Show notification function
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+                z-index: 3000;
+                font-weight: 600;
+                animation: slideInRight 0.5s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            // Add animation CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideInRight 0.5s ease reverse';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+
+        // Load timing options
+        function loadTimingOptions() {
+            const timingGrid = document.getElementById('timingGrid');
+            timingGrid.innerHTML = '';
+
+            // Generate dates for next 7 days
+            const dates = [];
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                dates.push(date);
+            }
+
+            dates.forEach(date => {
+                selectedMovie.showtimes.forEach(time => {
+                    const timingOption = document.createElement('div');
+                    timingOption.className = 'timing-option';
+                    timingOption.onclick = () => selectTiming(date, time);
+                    
+                    const dateStr = date.toLocaleDateString('en-US', { 
+                        weekday: 'short', 
+                        month: 'short', 
+                        day: 'numeric' 
+                    });
+                    
+                    timingOption.innerHTML = `
+                        <div class="timing-time">${time}</div>
+                        <div class="timing-date">${dateStr}</div>
+                    `;
+                    
+                    timingGrid.appendChild(timingOption);
+                });
+            });
+        }
+
+        // Select timing
+        function selectTiming(date, time) {
+            // Remove previous selection
+            document.querySelectorAll('.timing-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // Select new timing
+            event.target.closest('.timing-option').classList.add('selected');
+            
+            selectedTime = { date, time };
+            document.getElementById('nextToSeating').disabled = false;
+        }
+
+        // Next to seating step
+        function nextToSeating() {
+            if (!selectedTime) return;
+
+            document.getElementById('timingStep').classList.remove('active');
+            document.getElementById('seatingStep').classList.add('active');
+            
+            loadSeatingArrangement();
+            updateBookingSummary();
+        }
+
+        // Back to timing step
+        function backToTiming() {
+            document.getElementById('seatingStep').classList.remove('active');
+            document.getElementById('timingStep').classList.add('active');
+        }
+
+        // Load seating arrangement
+        function loadSeatingArrangement() {
+            const seatsGrid = document.getElementById('seatsGrid');
+            seatsGrid.innerHTML = '';
+
+            // Generate 80 seats (8 rows x 10 columns)
+            for (let row = 0; row < 8; row++) {
+                for (let col = 0; col < 10; col++) {
+                    const seat = document.createElement('div');
+                    const seatId = `${String.fromCharCode(65 + row)}${col + 1}`;
+                    seat.className = 'seat';
+                    seat.textContent = seatId;
+                    seat.onclick = () => toggleSeat(seat, seatId);
+                    
+                    // Randomly mark some seats as booked
+                    if (Math.random() < 0.3) {
+                        seat.classList.add('booked');
+                        bookedSeats.add(seatId);
+                    }
+                    
+                    seatsGrid.appendChild(seat);
+                }
+            }
+        }
+
+        // Toggle seat selection
+        function toggleSeat(seatElement, seatId) {
+            if (seatElement.classList.contains('booked')) return;
+
+            if (seatElement.classList.contains('selected')) {
+                seatElement.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(seat => seat !== seatId);
+            } else {
+                seatElement.classList.add('selected');
+                selectedSeats.push(seatId);
+            }
+
+            updateBookingSummary();
+            document.getElementById('confirmBooking').disabled = selectedSeats.length === 0;
+        }
+
+        // Update booking summary
+        function updateBookingSummary() {
+            if (!selectedMovie || !selectedTime) return;
+
+            const dateStr = selectedTime.date.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+
+            document.getElementById('summaryMovie').textContent = selectedMovie.title;
+            document.getElementById('summaryDate').textContent = dateStr;
+            document.getElementById('summaryTime').textContent = selectedTime.time;
+            document.getElementById('summarySeats').textContent = selectedSeats.length > 0 ? selectedSeats.join(', ') : 'No seats selected';
+            document.getElementById('summaryTotal').textContent = `$${(selectedSeats.length * 12).toFixed(2)}`;
+        }
+
+        // Confirm booking
+        function confirmBooking() {
+            if (selectedSeats.length === 0) return;
+
+            // Show loading
+            const confirmBtn = document.getElementById('confirmBooking');
+            const originalText = confirmBtn.textContent;
+            confirmBtn.textContent = 'Processing...';
+            confirmBtn.disabled = true;
+
+            // Simulate booking process
+            setTimeout(() => {
+                // Create booking data with user email
+                const newTicket = {
+                    id: Date.now(),
+                    movie: selectedMovie.title,
+                    date: selectedTime.date.toISOString().split('T')[0],
+                    time: selectedTime.time,
+                    seats: selectedSeats.join(', '),
+                    status: 'confirmed',
+                    userEmail: localStorage.getItem('userEmail') || 'unknown'
+                };
+                
+                // Store in localStorage (consistent with booking.html)
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings.push(newTicket);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                
+                // Also add to local array for backward compatibility
+                bookedTickets.push(newTicket);
+                
+                // Close modal
+                closeBookingModal();
+                
+                // Show success message
+                alert(`Successfully booked ${selectedMovie.title}! Ticket added to your bookings.`);
+                
+                // Refresh tickets section if it's currently visible
+                if (document.getElementById('tickets-section').style.display !== 'none') {
+                    loadBookedTickets();
+                }
+
+                // Reset button
+                confirmBtn.textContent = originalText;
+                confirmBtn.disabled = false;
+            }, 2000);
+        }
+
+        // Load showtimes
+        function loadShowtimes() {
+            const showtimeGrid = document.getElementById('showtimeGrid');
+            showtimeGrid.innerHTML = '';
+
+            // Group showtimes by movie for better organization
+            movies.forEach(movie => {
+                const movieShowtimeCard = document.createElement('div');
+                movieShowtimeCard.className = 'showtime-card';
+                movieShowtimeCard.style.gridColumn = 'span 2';
+                movieShowtimeCard.style.textAlign = 'left';
+                movieShowtimeCard.style.padding = '1.5rem';
+                
+                let showtimesHTML = `<div class="showtime-movie" style="font-size: 1.2rem; margin-bottom: 1rem;">${movie.title}</div>`;
+                showtimesHTML += '<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">';
+                
+                movie.showtimes.forEach(time => {
+                    showtimesHTML += `<span style="background: #64ffda; color: #0a192f; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">${time}</span>`;
+                });
+                
+                showtimesHTML += '</div>';
+                movieShowtimeCard.innerHTML = showtimesHTML;
+                showtimeGrid.appendChild(movieShowtimeCard);
+            });
+        }
+
+        // Load booked tickets
+        function loadBookedTickets() {
+            const ticketsList = document.getElementById('ticketsList');
+            ticketsList.innerHTML = '';
+
+            // Get current user's email
+            const currentUserEmail = localStorage.getItem('userEmail');
+            
+            if (!currentUserEmail) {
+                ticketsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: white;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🔐</div>
+                        <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Please login to view your tickets</h3>
+                        <p style="font-size: 1.1rem; opacity: 0.8;">You need to be logged in to see your booking history.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Load bookings from localStorage and filter by current user
+            const storedBookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const userBookings = storedBookings.filter(booking => booking.userEmail === currentUserEmail);
+
+            if (userBookings.length === 0) {
+                ticketsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: white;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🎬</div>
+                        <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">No tickets booked yet</h3>
+                        <p style="font-size: 1.1rem; opacity: 0.8;">Book your first movie to see your tickets here!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            userBookings.forEach(ticket => {
+                const ticketCard = document.createElement('div');
+                ticketCard.className = 'ticket-card';
+                ticketCard.style.cursor = 'pointer';
+                ticketCard.onclick = () => viewTicket(ticket);
+                ticketCard.innerHTML = `
+                    <div class="ticket-info">
+                        <h4>${ticket.movie}</h4>
+                        <div class="ticket-details">
+                            Date: ${ticket.date} | Time: ${ticket.time} | Seats: ${ticket.seats}
+                        </div>
+                    </div>
+                    <div class="ticket-status status-${ticket.status}">
+                        ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                    </div>
+                `;
+                ticketsList.appendChild(ticketCard);
+            });
+        }
+
+        // View ticket function
+        function viewTicket(ticket) {
+            // Store ticket data in localStorage for ticket.html to access
+            localStorage.setItem('currentTicket', JSON.stringify(ticket));
+            // Navigate to ticket.html
+            window.location.href = 'ticket.html';
+        }
+
+        // Navigation function
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+            
+            // Show selected section
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-menu a').forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Logout function
+        function logout() {
+            clearUserSession();
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                closeBookingModal();
+            }
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to movie cards
+            const movieCards = document.querySelectorAll('.movie-card');
+            movieCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
